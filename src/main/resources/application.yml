@@ -1,0 +1,43 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: 'localhost:9092'
+          autoCreateTopics: false
+          replicationFactor: 1
+        deserializationExceptionHandler: logAndContinue
+        bindings:
+          notification-input:
+            consumer:
+              startOffset: latest
+              enableDlq: true
+              dlqName: register-user-DLQ
+              autoCommitOnError: true
+              autoCommitOffset: true
+              configuration:
+                max.poll.records: 100
+                max.poll.interval.ms: 1000000
+      bindings:
+        notification-input:
+          destination: register-user_notification
+          content-type: application/json
+          group: group-notification
+          consumer:
+            maxAttempts: 1
+            concurrency: 5
+#        my-test-output:
+#          destination: register-user_notification
+#          content-type: application/json
+
+  mail:
+    username: XXXXXXXXXXXXX@gmail.com
+    host: smtp.gmail.com
+    port: '587'
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    password: XXXXXXXXXXXX
