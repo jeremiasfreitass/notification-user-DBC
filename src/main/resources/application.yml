@@ -4,7 +4,7 @@ spring:
       kafka:
         binder:
           brokers: 'localhost:9092'
-          autoCreateTopics: false
+          autoCreateTopics: true
           replicationFactor: 1
         deserializationExceptionHandler: logAndContinue
         bindings:
@@ -12,7 +12,7 @@ spring:
             consumer:
               startOffset: latest
               enableDlq: true
-              dlqName: register-user-DLQ
+              dlqName: register-user_notification-DLQ
               autoCommitOnError: true
               autoCommitOffset: true
               configuration:
@@ -21,17 +21,15 @@ spring:
       bindings:
         notification-input:
           destination: register-user_notification
-          content-type: application/json
-          group: group-notification
+          contenty-type: application/json
+          group: notification
           consumer:
             maxAttempts: 1
             concurrency: 5
-#        my-test-output:
-#          destination: register-user_notification
-#          content-type: application/json
 
   mail:
-    username: XXXXXXXXXXXXX@gmail.com
+    username: xxxx@gmail.com
+    password: xxxxx
     host: smtp.gmail.com
     port: '587'
     properties:
@@ -40,4 +38,3 @@ spring:
           starttls:
             enable: 'true'
           auth: 'true'
-    password: XXXXXXXXXXXX
